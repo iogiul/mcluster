@@ -39,6 +39,9 @@ mcluster_gpu: gpupot.gpu.o main.c
 
 mcluster: 
 	$(CCM) -o mcluster main.c -lm
+	
+mcluster_workaround: 
+	$(CCM) -o mcluster main_workaround.c -lm
 
 gpupot.gpu.o: gpupot.gpu.cu cuda_pointer.h
 	nvcc -c $(CUFLAGS) -Xcompiler "-fPIC -O3 -Wall" -I$(SDK_PATH)/common/inc -I. gpupot.gpu.cu 
