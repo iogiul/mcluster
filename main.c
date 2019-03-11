@@ -153,7 +153,7 @@ int main (int argv, char **argc) {
 	int gn = 0;						//Counter for EFF/Nuker profile parameters
 	double extgas[4];				//Input array for external potential parameters
 	
-    feenableexcept(FE_DIVBYZERO | FE_INVALID | FE_OVERFLOW);
+    feraiseexcept(FE_DIVBYZERO | FE_INVALID | FE_OVERFLOW);
     
 	//SSE internal parameters (see Hurley, Pols & Tout 2000) 
 	value1_.neta = 0.5;			//Reimers mass-loss coefficent (neta*4x10^-13; 0.5 normally)

@@ -5,7 +5,7 @@ FC = gfortran -O2 #-ffast-math
 
 LFLAGS = const_bse.h zdata.h 
 
-CC = gcc -O2 -fopenmp -Wall #-ffast-math 
+CCM = $(CC) -O2 -fopenmp -Wall #-ffast-math 
 #use "-D NOOMP" and remove "-fopenmp" for compilation without OpenMP
 
 #CFLAGS = -L/opt/local/lib/gcc44/ -lgfortran
@@ -26,19 +26,19 @@ instar.f mix.f rl.f
 OBJECTS = $(SOURCE:.f=.o)
 
 mcluster_sse: $(OBJECTS) $(LFLAGS)
-	$(CC) -c main.c -D SSE -lm
-	$(CC) $(OBJECTS) main.o -o mcluster_sse -lm $(CFLAGS) 
+	$(CCM) -c main.c -D SSE -lm
+	$(CCM) $(OBJECTS) main.o -o mcluster_sse -lm $(CFLAGS) 
 
 mcluster_ssegpu: $(OBJECTS) $(LFLAGS) gpupot.gpu.o main.c
-	$(CC) -c main.c -D SSE -D GPU -lm -I$(CUDA_PATH)/include
-	$(CC) $(OBJECTS) main.o gpupot.gpu.o  -o mcluster_gpu -L$(CUDA_PATH)/lib64 -lcudart -lstdc++ -lm $(CFLAGS) 
+	$(CCM) -c main.c -D SSE -D GPU -lm -I$(CUDA_PATH)/include
+	$(CCM) $(OBJECTS) main.o gpupot.gpu.o  -o mcluster_gpu -L$(CUDA_PATH)/lib64 -lcudart -lstdc++ -lm $(CFLAGS) 
 
 mcluster_gpu: gpupot.gpu.o main.c
-	$(CC) -c main.c -D GPU -I$(CUDA_PATH)/include
-	$(CC) main.o gpupot.gpu.o -o mcluster_gpu -L$(CUDA_PATH)/lib64 -lcudart -lstdc++ -lm
+	$(CCM) -c main.c -D GPU -I$(CUDA_PATH)/include
+	$(CCM) main.o gpupot.gpu.o -o mcluster_gpu -L$(CUDA_PATH)/lib64 -lcudart -lstdc++ -lm
 
 mcluster: 
-	$(CC) -o mcluster main.c -lm
+	$(CCM) -o mcluster main.c -lm
 
 gpupot.gpu.o: gpupot.gpu.cu cuda_pointer.h
 	nvcc -c $(CUFLAGS) -Xcompiler "-fPIC -O3 -Wall" -I$(SDK_PATH)/common/inc -I. gpupot.gpu.cu 
